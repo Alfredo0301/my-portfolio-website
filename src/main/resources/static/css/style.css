@@ -1,0 +1,13 @@
+body {
+    /* Cor de fundo base */
+    background-color: #e0e0d1;
+    /* Cria o efeito de linhas cruzadas (grid) */
+    background-image:
+        linear-gradient(#bcbcaf 1px, transparent 1px),
+        linear-gradient(90deg, #bcbcaf 1px, transparent 1px);
+    background-size: 30px 30px; /* Tamanho dos quadradinhos */
+    margin: 0;
+    height: 100vh;
+    overflow: hidden; /* Evita que a tela fique "rolando" */
+    font-family: 'Courier New', Courier, monospace; /* Fonte com cara de sistema antigo */
+}
