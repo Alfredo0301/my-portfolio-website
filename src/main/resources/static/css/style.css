@@ -11,3 +11,166 @@ body {
     overflow: hidden; /* Evita que a tela fique "rolando" */
     font-family: 'Courier New', Courier, monospace; /* Fonte com cara de sistema antigo */
 }
+
+/* Container que organiza os ícones em coluna, igual ao Windows */
+.desktop {
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+    height: calc(100vh - 50px); /* Desconta a altura da barra */
+}
+
+/* Estilo de cada ícone de pasta */
+.folder-icon {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 80px;
+    cursor: pointer;
+}
+
+.folder-icon img {
+    width: 60px;
+    height: auto;
+}
+
+.folder-icon span {
+    margin-top: 5px;
+    background-color: #5c5c50; /* Cor escura da fonte na referência */
+    color: white;
+    padding: 2px 8px;
+    font-size: 14px;
+    border-radius: 2px;
+}
+
+.folder-icon:hover {
+    filter: brightness(1.2); /* Deixa o ícone um pouco mais claro */
+    transform: translateY(-2px); /* Dá um pulinho pra cima */
+    transition: 0.2s; /* Deixa o movimento suave */
+}
+
+.folder-icon:active {
+    transform: scale(0.9); /* Quando clica de verdade, ela dá uma encolhida */
+}
+
+/* Barra de Tarefas (Taskbar) */
+.taskbar {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    height: 45px;
+    background-color: #bcbcaf; /* Mesma cor das linhas do grid */
+    border-top: 2px solid #5c5c50;
+    display: flex;
+    align-items: center;
+    padding: 0 10px;
+    gap: 15px;
+}
+
+.start-button {
+    background-color: #5c5c50;
+    color: white;
+    padding: 5px 15px;
+    font-weight: bold;
+    border: 1px solid black;
+}
+
+/* Estilo geral da Janela */
+.window {
+    display: none;
+    position: absolute; /* Essencial para o JS mover */
+    width: 550px;
+    background-color: #fdfdfb;
+    border: 2px solid #5c5c50;
+    box-shadow: 6px 6px 0px #5c5c50;
+    z-index: 10;
+
+    /* REMOVA ESSAS LINHAS SE ELAS ESTIVEREM AÍ:
+       top: 50%;
+       left: 50%;
+       transform: translate(-50%, -50%);
+    */
+
+    /* Mantenha apenas isso para a animação crescer do centro da janela */
+    transform-origin: center;
+}
+
+/* Garanta que o keyframe também esteja limpo */
+@keyframes zoomIn {
+    from {
+        opacity: 0;
+        transform: scale(0.5);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+/* Animação de Saída - Encolhe no lugar */
+@keyframes zoomOut {
+    from {
+        opacity: 1;
+        transform: scale(1);
+    }
+    to {
+        opacity: 0;
+        transform: scale(0.5);
+    }
+}
+
+/* Classe que o JS vai colocar quando tu clicar no X */
+.window.closing {
+    animation: zoomOut 0.3s ease-in forwards; /* o 'forwards' mantém o estado final (invisível) */
+}
+
+/* Criamos uma "classe de ativação" */
+.window.active {
+    display: flex; /* O JavaScript adiciona a classe 'active' e a janela "nasce" */
+    flex-direction: column;
+    animation: zoomIn 0.3s ease-out; /* Aplica a animação de crescer */
+}
+
+/* Barra de Título */
+.window-header {
+    background-color: #5c5c50; /* Cor escura igual à referência */
+    color: white;
+    padding: 5px 12px;
+    display: flex;
+    justify-content: space-between; /* Título na esquerda, botão X na direita */
+    align-items: center;
+    font-family: monospace;
+}
+
+/* Botão de Fechar */
+.close-btn {
+    background-color: #fdfdfb;
+    border: 1px solid black;
+    cursor: pointer;
+    font-weight: bold;
+    padding: 0 5px;
+}
+
+/* Área interna com a foto e texto */
+.window-content {
+    padding: 30px;
+    display: flex;
+    gap: 20px;
+}
+
+.profile-img {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%; /* Faz a foto ficar redonda */
+    border: 2px solid #5c5c50;
+    object-fit: cover; /* Garante que a foto não fique esticada */
+}
+
+.window-header {
+    cursor: grab; /* Indica que pode pegar */
+}
+
+.window-header:active {
+    cursor: grabbing; /* Indica que está segurando */
+}

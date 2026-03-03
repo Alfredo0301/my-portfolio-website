@@ -8,7 +8,118 @@
 </head>
 
 <body>
-    <h1 th:text="${message}">Mensaagem do Servidor</h1>
-    <p>O servidor java está rodando com sucesso!</p>
+<main class="desktop">
+
+    <div class="folder-icon" onclick="openWindow('window-profile')">
+        <img th:src="@{/image/folder.png}" alt="Pasta">
+        <span>profile</span>
+    </div>
+
+    <div class="folder-icon">
+        <img th:src="@{/image/folder.png}" alt="Pasta">
+        <span>works</span>
+    </div>
+
+    <div class="folder-icon">
+        <img th:src="@{/image/folder.png}" alt="Pasta">
+        <span>contact</span>
+    </div>
+
+    <div id="window-profile" class="window">
+
+        <div class="window-header">
+            <span class="window-title">C:\ALFREDO\portfolio</span>
+            <button class="close-btn" onclick="closeWindow('window-profile')">X</button>
+        </div>
+
+        <div class="window-content">
+            <div class="profile-header">
+                <img th:src="@{/image/minha-foto.jpg}" class="profile-img" alt="Minha Foto">
+                <div class="profile-text">
+                    <h1>hi! i'm Alfredo</h1>
+                    <p class="subtitle">I'M A DEVELOPER</p>
+                    <q>Meaningful code starts with logic</q>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+</main>
+
+<footer class="taskbar">
+    <div class="start-button">START</div>
+    <div class="taskbar-divider"></div>
+    <div class="social-icons">
+        <div class="social-box">in</div>
+        <div class="social-box">gh</div>
+    </div>
+</footer>
+
+<script>
+    function openWindow(id) {
+        const win = document.getElementById(id);
+
+        if (!win.classList.contains('active')) {
+            // 1. Força a remoção de qualquer transform antigo do CSS
+            win.style.transform = "none";
+
+            // 2. Define o deslocamento (aumentei pra tu ver bem a diferença)
+            const deslocamentoX = 100; // 100px pra direita do centro
+            const deslocamentoY = 80;  // 80px pra baixo do centro
+
+            // 3. Calcula e aplica
+            const leftPos = (window.innerWidth / 2) - (win.offsetWidth / 2 || 275) + deslocamentoX;
+            const topPos = (window.innerHeight / 2) - (win.offsetHeight / 2 || 200) + deslocamentoY;
+
+            win.style.left = leftPos + "px";
+            win.style.top = topPos + "px";
+        }
+
+        win.classList.add('active');
+        bringToFront(win);
+    }
+
+        function closeWindow(id) {
+            const win = document.getElementById(id);
+            win.classList.add('closing');
+            setTimeout(() => {
+                win.classList.remove('active');
+                win.classList.remove('closing');
+            }, 300);
+        }
+
+        document.querySelectorAll('.window').forEach(setupDraggable);
+
+        function setupDraggable(win) {
+            const header = win.querySelector('.window-header');
+            let isDragging = false;
+            let offsetX, offsetY;
+
+            header.onmousedown = (e) => {
+                isDragging = true;
+                bringToFront(win);
+                offsetX = e.clientX - win.offsetLeft;
+                offsetY = e.clientY - win.offsetTop;
+
+            document.onmousemove = (e) => {
+                if (!isDragging) return;
+                win.style.left = (e.clientX - offsetX) + 'px';
+                win.style.top = (e.clientY - offsetY) + 'px';
+                win.style.transform = 'none';
+            };
+
+            document.onmouseup = () => {
+                isDragging = false;
+                document.onmousemove = null;
+                };
+            };
+        }
+
+        function bringToFront(win) {
+            document.querySelectorAll('.window').forEach(w => w.style.zIndex = "10");
+            win.style.zIndex = "100";
+        }
+</script>
 </body>
 </html>
