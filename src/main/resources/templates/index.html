@@ -10,17 +10,17 @@
 <body>
 <main class="desktop">
 
-    <div class="folder-icon" onclick="openWindow('window-profile')">
+    <div class="folder-icon" onclick="openWindow('window-profile', 50, 50)">
         <img th:src="@{/image/folder.png}" alt="Pasta">
         <span>profile</span>
     </div>
 
-    <div class="folder-icon">
+    <div class="folder-icon" onclick="window.location.href='/projects'">
         <img th:src="@{/image/folder.png}" alt="Pasta">
         <span>works</span>
     </div>
 
-    <div class="folder-icon">
+    <div class="folder-icon" onclick="window.location.href='/contact'">
         <img th:src="@{/image/folder.png}" alt="Pasta">
         <span>contact</span>
     </div>
@@ -57,69 +57,68 @@
 </footer>
 
 <script>
-    function openWindow(id) {
+    function openWindow(id, posX, posY) {
         const win = document.getElementById(id);
 
+        // Verifica se a janela já não está aberta para não ficar "pulando"
         if (!win.classList.contains('active')) {
-            // 1. Força a remoção de qualquer transform antigo do CSS
-            win.style.transform = "none";
+            const screenWidth = window.innerWidth;
+            const screenHeight = window.innerHeight;
 
-            // 2. Define o deslocamento (aumentei pra tu ver bem a diferença)
-            const deslocamentoX = 100; // 100px pra direita do centro
-            const deslocamentoY = 80;  // 80px pra baixo do centro
+            // Calcula o centro e soma o deslocamento (posX e posY)
+            const leftPos = (screenWidth / 2) - (win.offsetWidth / 2 || 275) + posX;
+            const topPos = (screenHeight / 2) - (win.offsetHeight / 2 || 200) + posY;
 
-            // 3. Calcula e aplica
-            const leftPos = (window.innerWidth / 2) - (win.offsetWidth / 2 || 275) + deslocamentoX;
-            const topPos = (window.innerHeight / 2) - (win.offsetHeight / 2 || 200) + deslocamentoY;
-
+            // Aplica a posição exata
             win.style.left = leftPos + "px";
             win.style.top = topPos + "px";
+            win.style.transform = "none"; // Remove o translate do CSS para não dar erro
         }
 
         win.classList.add('active');
         bringToFront(win);
     }
 
-        function closeWindow(id) {
-            const win = document.getElementById(id);
-            win.classList.add('closing');
-            setTimeout(() => {
-                win.classList.remove('active');
-                win.classList.remove('closing');
-            }, 300);
-        }
+            function closeWindow(id) {
+                const win = document.getElementById(id);
+                win.classList.add('closing');
+                setTimeout(() => {
+                    win.classList.remove('active');
+                    win.classList.remove('closing');
+                }, 300);
+            }
 
-        document.querySelectorAll('.window').forEach(setupDraggable);
+            document.querySelectorAll('.window').forEach(setupDraggable);
 
-        function setupDraggable(win) {
-            const header = win.querySelector('.window-header');
-            let isDragging = false;
-            let offsetX, offsetY;
+            function setupDraggable(win) {
+                const header = win.querySelector('.window-header');
+                let isDragging = false;
+                let offsetX, offsetY;
 
-            header.onmousedown = (e) => {
-                isDragging = true;
-                bringToFront(win);
-                offsetX = e.clientX - win.offsetLeft;
-                offsetY = e.clientY - win.offsetTop;
+                header.onmousedown = (e) => {
+                    isDragging = true;
+                    bringToFront(win);
+                    offsetX = e.clientX - win.offsetLeft;
+                    offsetY = e.clientY - win.offsetTop;
 
-            document.onmousemove = (e) => {
-                if (!isDragging) return;
-                win.style.left = (e.clientX - offsetX) + 'px';
-                win.style.top = (e.clientY - offsetY) + 'px';
-                win.style.transform = 'none';
-            };
-
-            document.onmouseup = () => {
-                isDragging = false;
-                document.onmousemove = null;
+                document.onmousemove = (e) => {
+                    if (!isDragging) return;
+                    win.style.left = (e.clientX - offsetX) + 'px';
+                    win.style.top = (e.clientY - offsetY) + 'px';
+                    win.style.transform = 'none';
                 };
-            };
-        }
 
-        function bringToFront(win) {
-            document.querySelectorAll('.window').forEach(w => w.style.zIndex = "10");
-            win.style.zIndex = "100";
-        }
+                document.onmouseup = () => {
+                    isDragging = false;
+                    document.onmousemove = null;
+                    };
+                };
+            }
+
+            function bringToFront(win) {
+                document.querySelectorAll('.window').forEach(w => w.style.zIndex = "10");
+                win.style.zIndex = "100";
+            }
 </script>
 </body>
 </html>
