@@ -1,0 +1,24 @@
+# IMPORTANTE: Este é um arquivo de exemplo!
+# Crie um arquivo "application-prod.properties" com suas credenciais reais
+# NÃO versione este arquivo no Git - ele está no .gitignore
+
+# Configurações de Banco de Dados para Produção
+# Use variáveis de ambiente ou configure manualmente
+
+DB_URL=jdbc:mysql://localhost:3306/db_portfolio
+DB_USERNAME=seu_usuario
+DB_PASSWORD=sua_senha_forte
+
+# Exemplo com variáveis de ambiente (Linux/Mac):
+# export DB_URL=jdbc:mysql://seu-host:3306/db_portfolio
+# export DB_USERNAME=seu_usuario
+# export DB_PASSWORD=sua_senha
+
+# Exemplo com variáveis de ambiente (Windows PowerShell):
+# $env:DB_URL="jdbc:mysql://seu-host:3306/db_portfolio"
+# $env:DB_USERNAME="seu_usuario"
+# $env:DB_PASSWORD="sua_senha"
+
+# Depois execute:
+# mvn spring-boot:run -Dspring-boot.run.arguments="--spring.profiles.active=prod"
+

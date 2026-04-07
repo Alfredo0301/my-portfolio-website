@@ -1,0 +1,40 @@
+version: '3.8'
+
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: portfolio_mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: root_password
+      MYSQL_DATABASE: db_portfolio
+      MYSQL_USER: portfolio_user
+      MYSQL_PASSWORD: portfolio_password
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+    networks:
+      - portfolio_network
+
+  app:
+    build: .
+    container_name: portfolio_app
+    ports:
+      - "8080:8080"
+    environment:
+      DB_URL: jdbc:mysql://mysql:3306/db_portfolio
+      DB_USERNAME: portfolio_user
+      DB_PASSWORD: portfolio_password
+      SPRING_PROFILES_ACTIVE: prod
+    depends_on:
+      - mysql
+    networks:
+      - portfolio_network
+
+volumes:
+  mysql_data:
+
+networks:
+  portfolio_network:
+    driver: bridge
+
